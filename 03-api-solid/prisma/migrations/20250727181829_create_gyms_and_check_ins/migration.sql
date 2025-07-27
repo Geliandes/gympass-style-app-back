@@ -5,8 +5,7 @@
 
 */
 -- AlterTable
-ALTER TABLE "users" ADD COLUMN     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-ADD COLUMN     "password_hash" TEXT NOT NULL;
+ALTER TABLE "users" ADD COLUMN     "password_hash" TEXT NOT NULL;
 
 -- CreateTable
 CREATE TABLE "check_ins" (

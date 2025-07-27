@@ -1,15 +1,15 @@
-import { app } from "./app";
-import { env } from "./env";
+import { app } from './app';
+import { env } from './env';
 
 app
   .listen({
-    host: "0.0.0.0",
+    host: 'localhost',
     port: env.PORT,
   })
   .then(() => {
-    console.log("🚀 Server is running on port 3333");
+    console.log(`Server listening on http://localhost:${env.PORT}`);
   })
-  .catch((error) => {
-    console.error(error);
+  .catch((err) => {
+    console.error(err);
     process.exit(1);
   });

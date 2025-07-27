@@ -14,7 +14,7 @@ model User {
   password_hash String
   created_at    DateTime @default(now())
 
-  checkIns      CheckIn[]
+  checkIns CheckIn[]
 
   @@map("users")
 }
@@ -41,7 +41,7 @@ model Gym {
   latitude    Decimal
   longitude   Decimal
 
-  checkIns CheckIn[]
+  CheckIns CheckIn[]
 
   @@map("gyms")
 }
