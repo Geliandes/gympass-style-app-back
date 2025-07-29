@@ -1,21 +1,26 @@
-import { expect, describe, it } from 'vitest';
+import { expect, describe, it, beforeEach } from 'vitest';
 import { compare } from 'bcryptjs';
 import { InMemoryUsersRepository } from '@/repositories/in-memory/in-memory-users-repository';
 import { RegisterUseCase } from './register';
 import { UserAlreadyExistsError } from './errors/user-already-exists';
 
-describe('Register Use Case', () => {
-  it('should hash user password upon registration', async () => {
-    const usersRepository = new InMemoryUsersRepository();
-    const registerUseCase = new RegisterUseCase(usersRepository);
+let usersRepository: InMemoryUsersRepository;
+let sut: RegisterUseCase;
 
+describe('Register Use Case', () => {
+  beforeEach(() => {
+    usersRepository = new InMemoryUsersRepository();
+    sut = new RegisterUseCase(usersRepository);
+  });
+
+  it('should hash user password upon registration', async () => {
     const request = {
       name: 'John Doe',
       email: 'john.doe@example.com',
       password: '123456',
     };
 
-    const { user } = await registerUseCase.execute(request);
+    const { user } = await sut.execute(request);
 
     const isPasswordCorrectlyHashed = await compare(request.password, user.password_hash);
 
@@ -23,19 +28,16 @@ describe('Register Use Case', () => {
   });
 
   it('should not be able to register with an existing email', async () => {
-    const usersRepository = new InMemoryUsersRepository();
-    const registerUseCase = new RegisterUseCase(usersRepository);
-
     const email = 'john.doe@example.com';
 
-    await registerUseCase.execute({
+    await sut.execute({
       name: 'John Doe',
       email,
       password: '123456',
     });
 
     await expect(
-      registerUseCase.execute({
+      sut.execute({
         name: 'John Doe',
         email,
         password: '123456',
@@ -44,16 +46,13 @@ describe('Register Use Case', () => {
   });
 
   it('should be able to register', async () => {
-    const usersRepository = new InMemoryUsersRepository();
-    const registerUseCase = new RegisterUseCase(usersRepository);
-
     const request = {
       name: 'John Doe',
       email: 'john.doe@example.com',
       password: '123456',
     };
 
-    const { user } = await registerUseCase.execute(request);
+    const { user } = await sut.execute(request);
 
     expect(user).toEqual(
       expect.objectContaining({
