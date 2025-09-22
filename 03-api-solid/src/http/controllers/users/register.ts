@@ -6,7 +6,7 @@ import { makeRegisterUseCase } from '@/use-cases/factories/make-register-use-cas
 export async function register(request: FastifyRequest, reply: FastifyReply) {
   const registerBodySchema = z.object({
     name: z.string(),
-    email: z.email(),
+    email: z.string().email(),
     password: z.string().min(6),
   })
 
